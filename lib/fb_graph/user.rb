@@ -27,22 +27,21 @@ module FbGraph
     # include Connections::Outbox
     # include Connections::Updates
 
-    attr_accessor :name, :last_name, :first_name, :link, :about, :birthday, :work, :education, :email, :website
+    FIELDS = [
+      :name, :last_name, :first_name, :link, :about, :birthday,
+      :work, :education, :email, :website, :picture 
+    ]
+
+    attr_accessor *FIELDS
 
     def initialize(identifier, options = {})
       super
-      @name       = options[:name]
-      @last_name  = options[:last_name]
-      @first_name = options[:first_name]
-      @link       = options[:link]
-      @about      = options[:about]
-      @birthday   = options[:birthday]
-      @work       = options[:work]
-      @education  = options[:education]
-      @email      = options[:email]
-      @website    = options[:website]
+      
+      FIELDS.each do |field_name|
+        instance_variable_set("@#{field_name}", options[field_name])    
+      end
     end
-
+      
     def self.me(access_token)
       new('me', :access_token => access_token)
     end
